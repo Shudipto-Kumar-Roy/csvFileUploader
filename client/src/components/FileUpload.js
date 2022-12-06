@@ -3,11 +3,9 @@ import axios from "axios";
 
 export const FileUpload = () => {
   const [file, setFile] = useState("");
-  const [fileName, setFileName] = useState("");
   const [uploadedfile, setUploadedFile] = useState({});
   const fileHandle = (e) => {
     setFile(e.target.files[0]);
-    setFileName(e.target.files[0].name);
   };
 
   const handleUpload = (e) => {
@@ -51,15 +49,6 @@ export const FileUpload = () => {
           value="Upload"
         />
       </form>
-      {uploadedfile && (
-        <a
-          className="no-underline text-white p-2 rounded-md bg-slate-600"
-          href={`/uploads/${uploadedfile.fileName}`}
-          target="_blank"
-        >
-          Download CSV {fileName}
-        </a>
-      )}
     </div>
   );
 };

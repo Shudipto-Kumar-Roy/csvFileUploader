@@ -24,8 +24,7 @@ exports.uploadFile = async (req, res, next) => {
       csv()
         .fromFile(`./uploads/products.csv`)
         .then(async (jsonObj) => {
-          const products = new Product(jsonObj);
-          await products.save();
+          const products = await Product.insertMany(jsonObj);
           res.status(200).json({
             fileName: replacedfilename,
             filePath: `/${file.path}`,
