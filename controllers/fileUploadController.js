@@ -1,7 +1,6 @@
 const csv = require("csvtojson");
-
+const Product = require("../models/productModel");
 exports.uploadFile = async (req, res, next) => {
-  let result = [];
   try {
     if (req.files === null) {
       return res.status(400).json({
@@ -24,11 +23,13 @@ exports.uploadFile = async (req, res, next) => {
       }
       csv()
         .fromFile(`./uploads/products.csv`)
-        .then((jsonObj) => {
+        .then(async (jsonObj) => {
+          const products = new Product(jsonObj);
+          await products.save();
           res.status(200).json({
             fileName: replacedfilename,
             filePath: `/${file.path}`,
-            products: jsonObj,
+            products,
           });
         });
     });
