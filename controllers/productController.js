@@ -1,4 +1,5 @@
 const csv = require("csvtojson");
+
 const Product = require("../models/productModel");
 exports.uploadFile = async (req, res, next) => {
   try {
@@ -21,16 +22,28 @@ exports.uploadFile = async (req, res, next) => {
           message: err.message,
         });
       }
+      // converting csv to json
       csv()
         .fromFile(`./uploads/products.csv`)
         .then(async (jsonObj) => {
-          const products = await Product.insertMany(jsonObj);
+          const products = await Product.create(jsonObj);
           res.status(200).json({
-            fileName: replacedfilename,
-            filePath: `/${file.path}`,
+            success: true,
             products,
           });
         });
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.getAllProducts = async (req, res, next) => {
+  try {
+    const products = await Product.find();
+    res.status(200).json({
+      success: true,
+      products,
     });
   } catch (error) {
     console.log(error);

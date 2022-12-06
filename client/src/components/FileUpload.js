@@ -3,7 +3,8 @@ import axios from "axios";
 
 export const FileUpload = () => {
   const [file, setFile] = useState("");
-  const [uploadedfile, setUploadedFile] = useState({});
+  const [viewallproducts, setViewAllProducts] = useState([]);
+  const [productsData, setProductsData] = useState([]);
   const fileHandle = (e) => {
     setFile(e.target.files[0]);
   };
@@ -19,8 +20,8 @@ export const FileUpload = () => {
             "Content-Type": "multipart/form-data",
           },
         });
-        const { fileName, filePath, products } = res.data;
-        setUploadedFile({ fileName, filePath, products });
+        const { products } = res.data;
+        setProductsData([...productsData, products]);
         if (res && res.status === 200) {
           alert("File uploaded successfully");
           setFile("");
@@ -32,10 +33,22 @@ export const FileUpload = () => {
     sendFile();
   };
 
-  console.log(uploadedfile);
+  const handleView = async (e) => {
+    try {
+      const res = await axios.get("/api/v1/getallproducts");
+      setViewAllProducts([...viewallproducts, res.data.products]);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  console.log(viewallproducts);
   return (
     <div className="w-screen h-screen flex flex-col justify-center items-center">
-      <form action="" onSubmit={handleUpload} className="my-4">
+      <form
+        action=""
+        onSubmit={handleUpload}
+        className="my-4 flex justify-center items-center"
+      >
         <input
           type="file"
           name="csvfile"
@@ -49,6 +62,13 @@ export const FileUpload = () => {
           value="Upload"
         />
       </form>
+      <button
+        className="text-white p-2 rounded-md bg-slate-600"
+        type="button"
+        onClick={handleView}
+      >
+        View Products
+      </button>
     </div>
   );
 };

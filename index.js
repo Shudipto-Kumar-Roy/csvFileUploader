@@ -1,6 +1,7 @@
 const express = require("express");
 const fileUpload = require("express-fileupload");
-const connectToDB = require("../csvUploadWithParse/database/config");
+const { connectToDB } = require("./database/config");
+
 const app = express();
 
 // environment setup
@@ -12,7 +13,7 @@ const PORT = process.env.PORT || 5000;
 connectToDB();
 
 // internal import
-const userRoute = require("./routes/userRoute");
+const productRoute = require("./routes/productRoute");
 
 // middlewares
 app.use(express.json({ limit: "50mb" }));
@@ -20,7 +21,7 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 app.use(fileUpload());
 
 // routes
-app.use("/api/v1", userRoute);
+app.use("/api/v1", productRoute);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
