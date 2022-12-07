@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { CSVLink } from "react-csv";
+import jsPDF from "jspdf";
 
 const CreateOrderAndUpdateStatus = () => {
   let csvdataArrays = [];
@@ -57,6 +58,21 @@ const CreateOrderAndUpdateStatus = () => {
   });
   csvdataArrays.unshift(["orderId", "orderStatus"]);
 
+  const generatePdf = () => {
+    // new document is jspdf
+    let xAxis = 20;
+    let yAxis = 20;
+    const doc = new jsPDF();
+    doc.setFont("Times New Roman");
+    doc.setFontSize(12);
+
+    // add some text to pdf document
+    csvdataArrays.forEach((value) => {
+      doc.text(`${value}`, xAxis, (yAxis += 10));
+    });
+    doc.save("orderstatus.pdf");
+  };
+
   return (
     <div className="w-screen h-auto flex flex-col justify-center items-center">
       <button
@@ -94,6 +110,13 @@ const CreateOrderAndUpdateStatus = () => {
           Download CSV
         </CSVLink>
       )}
+
+      <button
+        className="text-white p-2 rounded-md bg-slate-600"
+        onClick={generatePdf}
+      >
+        Download PDF
+      </button>
     </div>
   );
 };

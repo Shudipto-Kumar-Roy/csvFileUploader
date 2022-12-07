@@ -15,6 +15,7 @@ connectToDB();
 // internal import
 const productRoute = require("./routes/productRoute");
 const orderRoute = require("./routes/orderRoute");
+const errorMiddleware = require("./middleware/errorMiddleware");
 
 // middlewares
 app.use(express.json({ limit: "50mb" }));
@@ -24,6 +25,9 @@ app.use(fileUpload());
 // routes
 app.use("/api/v1", productRoute);
 app.use("/api/v1", orderRoute);
+
+// error handler
+app.use(errorMiddleware);
 
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);

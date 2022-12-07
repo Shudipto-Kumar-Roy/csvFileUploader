@@ -27,7 +27,7 @@ export const FileUpload = () => {
           setFile("");
         }
       } catch (error) {
-        console.log(error.response.data.message);
+        alert(error.response.data.message);
       }
     };
     sendFile();
@@ -38,7 +38,7 @@ export const FileUpload = () => {
       const res = await axios.get("/api/v1/getallproducts");
       setViewAllProducts([...viewallproducts, res.data.products]);
     } catch (error) {
-      console.log(error);
+      alert(error.response.data.message);
     }
   };
   console.log(viewallproducts);

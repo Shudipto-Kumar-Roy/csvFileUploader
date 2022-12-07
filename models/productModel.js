@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const productSchema = new mongoose.Schema({
   "Backorders allowed": String,
   Categories: String,
-  ID: String,
+  ID: { type: String, required: true, unique: true },
   Images: String,
   "In stock": Boolean,
   "Is featured": String,
